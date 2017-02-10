@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import store from '../store';
 import Lyrics from '../components/Lyrics';
-import {setLyrics} from '../action-creators/lyrics';
+import {setLyrics, fetchLyrics} from '../action-creators/lyrics';
 
 export default class extends Component{
   constructor(){
@@ -27,15 +27,11 @@ export default class extends Component{
 
   handleSubmit(event){
     event.preventDefault();
-
+    
     if (this.state.artistQuery && this.state.songQuery){
-      axios.get(`/api/lyrics/${this.state.artistQuery}/${this.state.songQuery}`)
-      .then(res => {
-        console.log('lyrics', res.data.lyric);
-        store.dispatch(setLyrics(res.data.lyric))
-      })
-      .catch(console.error.bind(console));
+      fetchLyrics(this.state.artistQuery, this.state.songQuery);
     }
+    
   }
 
   componentDidMount(){
